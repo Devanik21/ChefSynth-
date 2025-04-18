@@ -43,7 +43,8 @@ with col2:
 with col3:
     diet = st.selectbox("Dietary preference", ["None", "Vegetarian", "Vegan", "Gluten-Free", "Keto", "Dairy-Free"])
 
-num_recipes = st.slider("How many recipes do you want?", 1, 5, 3)
+# --- Default Recipe Count ---
+default_recipe_count = 3  # Default to 3 recipes
 
 # --- Prompt Builder ---
 def build_prompt(ingredients, cuisine, meal_type, diet, count):
@@ -70,7 +71,7 @@ Respond in clean markdown format with each recipe in a collapsible section using
 
 # --- Generate Recipes ---
 if st.button("🍳 Generate My Recipes") and ingredient_str and api_key:
-    prompt = build_prompt(ingredient_str, cuisine, meal_type, diet, num_recipes)
+    prompt = build_prompt(ingredient_str, cuisine, meal_type, diet, default_recipe_count)
 
     with st.spinner("Cooking up some recipe magic with Gemini..."):
         try:
