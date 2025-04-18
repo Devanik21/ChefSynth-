@@ -2,7 +2,7 @@ import streamlit as st
 import google.generativeai as genai
 
 # --- Must be FIRST Streamlit command ---
-st.set_page_config(page_title="FridgeFeast 🍽️", layout="wide")
+st.set_page_config(page_title="FridgeFeast", layout="wide",page_icon="🍇")
 
 # --- Sidebar for API Key ---
 st.sidebar.title("🔑 API Settings")
