@@ -56,8 +56,7 @@ Each recipe must include:
 - A clear list of ingredients
 - Easy-to-follow instructions (step-by-step)
 
-Respond in clean markdown format with each recipe in a collapsible section using headings.
-
+Present each recipe in a clean, simple markdown format with no HTML tags like <details>, <summary>, or <strong>.
 """
     if cuisine != "Any":
         prompt += f"The recipes should follow {cuisine} cuisine.\n"
