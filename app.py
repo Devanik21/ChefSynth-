@@ -574,6 +574,6 @@ with tab3:
 st.markdown("""
 ---
 <div style="text-align:center">
-    <p>© 2025 FridgeFeast | Made with ❤️ and Streamlit | Powered by Gemini AI</p>
+    <p>© 2025 FridgeFeast | Made with  Streamlit  + ❤️  | Powered by Gemini ✨</p>
 </div>
 """, unsafe_allow_html=True)
