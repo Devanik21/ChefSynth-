@@ -1,2 +1,5 @@
 streamlit
 google-generativeai
+speechrecognition
+pydub
+fpdf
