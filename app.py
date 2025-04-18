@@ -1,12 +1,10 @@
 import streamlit as st
 import google.generativeai as genai
-import speech_recognition as sr
 from fpdf import FPDF
 from io import BytesIO
-import os
 import base64
 
-# --- Page Config (MUST BE FIRST STREAMLIT COMMAND) ---
+# --- Page Config ---
 st.set_page_config(page_title="FridgeFeast", layout="wide", page_icon="🍇")
 
 # --- Custom CSS ---
@@ -38,33 +36,7 @@ st.write("Turn your ingredients into delicious meals using Gemini AI!")
 
 # --- Input Section ---
 st.markdown("#### 🛒 Your Ingredients")
-
-# Option to use speech
-use_voice = st.checkbox("🎙️ Use voice input instead of typing")
-
-def recognize_speech():
-    recognizer = sr.Recognizer()
-    mic = sr.Microphone()
-    with mic as source:
-        st.info("🎤 Listening... Speak your ingredients clearly.")
-        audio = recognizer.listen(source)
-    try:
-        text = recognizer.recognize_google(audio)
-        st.success(f"Recognized: {text}")
-        return text
-    except sr.UnknownValueError:
-        st.error("Could not understand audio")
-    except sr.RequestError as e:
-        st.error(f"Speech recognition error: {e}")
-    return ""
-
-if use_voice:
-    if st.button("Start Recording"):
-        ingredients = recognize_speech()
-    else:
-        ingredients = ""
-else:
-    ingredients = st.text_input("List ingredients (comma-separated)", placeholder="e.g., tomato, cheese, onion")
+ingredients = st.text_input("List ingredients (comma-separated)", placeholder="e.g., tomato, cheese, onion")
 
 col1, col2, col3 = st.columns(3)
 with col1:
@@ -115,9 +87,8 @@ if st.button("🍳 Generate Recipes") and ingredients and api_key:
             for r in recipes.split("\n\n"):
                 st.markdown(f"<div class='recipe-box'>{st.markdown(r)}</div>", unsafe_allow_html=True)
 
-            # Download as PDF
+            # PDF Download
             pdf_bytes = generate_pdf(recipes)
-            b64_pdf = base64.b64encode(pdf_bytes.getvalue()).decode()
             st.download_button("📥 Download Recipes as PDF", data=pdf_bytes, file_name="fridgefeast_recipes.pdf", mime="application/pdf")
 
         except Exception as e:
