@@ -29,6 +29,11 @@ custom_ingredients = st.text_input("Add any custom ingredients (comma-separated)
 all_ingredients = selected_ingredients + [i.strip() for i in custom_ingredients.split(",") if i.strip()]
 ingredient_str = ", ".join(all_ingredients)
 
+# --- Ingredient Filter (Disliked) ---
+st.subheader("❌ Ingredients to avoid")
+avoided_ingredients = st.text_input("Enter ingredients to avoid (comma-separated):")
+avoided_ingredient_str = ", ".join([i.strip() for i in avoided_ingredients.split(",") if i.strip()])
+
 # --- Preferences ---
 st.subheader("🎯 Preferences")
 
@@ -47,7 +52,7 @@ with col3:
 default_recipe_count = 3  # Default to 3 recipes
 
 # --- Prompt Builder ---
-def build_prompt(ingredients, cuisine, meal_type, diet, count):
+def build_prompt(ingredients, avoid_ingredients, cuisine, meal_type, diet, count):
     prompt = f"""
 You are a creative and friendly recipe assistant. Create {count} unique, simple, and delicious recipes based on the following ingredients: {ingredients}.
 Each recipe must include:
@@ -57,6 +62,8 @@ Each recipe must include:
 - Easy-to-follow instructions (step-by-step)
 
 Present each recipe in a clean, simple markdown format with no HTML tags like <details>, <summary>, or <strong>.
+
+If possible, avoid using the following ingredients: {avoid_ingredients}.
 """
     if cuisine != "Any":
         prompt += f"The recipes should follow {cuisine} cuisine.\n"
@@ -68,9 +75,22 @@ Present each recipe in a clean, simple markdown format with no HTML tags like <d
     prompt += "Avoid repeating ingredients unnecessarily. Make the output fun and engaging."
     return prompt
 
+# --- Random Recipe Button ---
+if st.button("🎲 Surprise Me with a Random Recipe!") and ingredient_str and api_key:
+    random_ingredients = "chicken, tomato, cheese, eggs, onion"  # You can randomize this list or set a random set of ingredients
+    prompt = build_prompt(random_ingredients, avoided_ingredient_str, cuisine, meal_type, diet, 1)
+
+    with st.spinner("Cooking up something random with Gemini..."):
+        try:
+            response = model.generate_content(prompt)
+            st.markdown("## 📖 Your Random AI-Powered Recipe:")
+            st.markdown(response.text)
+        except Exception as e:
+            st.error(f"Something went wrong: {e}")
+
 # --- Generate Recipes ---
 if st.button("🍳 Generate My Recipes") and ingredient_str and api_key:
-    prompt = build_prompt(ingredient_str, cuisine, meal_type, diet, default_recipe_count)
+    prompt = build_prompt(ingredient_str, avoided_ingredient_str, cuisine, meal_type, diet, default_recipe_count)
 
     with st.spinner("Cooking up some recipe magic with Gemini..."):
         try:
@@ -79,6 +99,10 @@ if st.button("🍳 Generate My Recipes") and ingredient_str and api_key:
             st.markdown(response.text)
         except Exception as e:
             st.error(f"Something went wrong: {e}")
+
+# --- Save Favorites (temporary feature) ---
+if st.button("💾 Save Favorites"):
+    st.write("Feature to save favorites coming soon!")
 
 elif not api_key:
     st.warning("Please enter your Gemini API key in the sidebar.")
