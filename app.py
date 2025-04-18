@@ -85,9 +85,7 @@ if st.button("🍳 Generate Recipes") and ingredients and api_key:
             recipes = response.text
 
             for r in recipes.split("\n\n"):
-                st.markdown("<div class='recipe-box'>", unsafe_allow_html=True)
-                st.markdown(r)
-                st.markdown("</div>", unsafe_allow_html=True)
+                st.markdown(f"<div class='recipe-box'>{st.markdown(r)}</div>", unsafe_allow_html=True)
 
             # PDF Download
             pdf_bytes = generate_pdf(recipes)
@@ -95,7 +93,6 @@ if st.button("🍳 Generate Recipes") and ingredients and api_key:
 
         except Exception as e:
             st.error(f"⚠️ Something went wrong: {e}")
-
 
 elif not api_key:
     st.warning("🔐 Please enter your Gemini API key in the sidebar to begin.")
