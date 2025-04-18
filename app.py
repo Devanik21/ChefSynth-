@@ -1,6 +1,9 @@
 import streamlit as st
 import google.generativeai as genai
 
+# --- Must be FIRST Streamlit command ---
+st.set_page_config(page_title="FridgeFeast 🍽️", layout="wide")
+
 # --- Sidebar for API Key ---
 st.sidebar.title("🔑 API Settings")
 api_key = st.sidebar.text_input("Enter your Gemini API Key", type="password")
@@ -8,10 +11,9 @@ api_key = st.sidebar.text_input("Enter your Gemini API Key", type="password")
 # --- Set up Gemini ---
 if api_key:
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("gemini-pro")
+    model = genai.GenerativeModel("gemini-2.0-flash")
 
 # --- App Header ---
-st.set_page_config(page_title="FridgeFeast 🍽️", layout="wide")
 st.title("FridgeFeast 🍽️")
 st.write("Generate simple, tasty recipes based on what you have in the fridge.")
 
@@ -35,14 +37,13 @@ Each recipe should include:
 - A short description
 - A list of ingredients
 - Step-by-step instructions
-
 """
     if cuisine:
         prompt += f"The recipes should follow {cuisine} cuisine.\n"
     if meal_type:
         prompt += f"These should be suitable for {meal_type}.\n"
 
-    prompt += "Present each recipe in a clean format."
+    prompt += "Present each recipe in a clean markdown format."
     return prompt
 
 # --- Recipe Generation ---
@@ -58,4 +59,3 @@ if st.button("Generate Recipes 🍳") and ingredients and api_key:
 
 elif not api_key:
     st.warning("Please enter your Gemini API key in the sidebar.")
-
