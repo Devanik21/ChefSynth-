@@ -7,6 +7,15 @@ from datetime import datetime
 import pandas as pd
 import plotly.express as px
 
+
+# --- Page Config ---
+st.set_page_config(
+    page_title="FridgeFeast", 
+    layout="wide", 
+    page_icon="🍇",
+    initial_sidebar_state="expanded"
+)
+
 # --- App State Management ---
 def init_session_state():
     if 'favorites' not in st.session_state:
@@ -62,13 +71,7 @@ else:
     </style>
     """, unsafe_allow_html=True)
 
-# --- Page Config ---
-st.set_page_config(
-    page_title="FridgeFeast", 
-    layout="wide", 
-    page_icon="🍇",
-    initial_sidebar_state="expanded"
-)
+
 
 # --- Sidebar ---
 with st.sidebar:
