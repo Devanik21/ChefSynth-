@@ -567,7 +567,7 @@ with tab3:
     **Version:** 2.0
     **Created with:** Streamlit and Google Gemini AI
     
-    For support or feedback, please contact support@fridgefeast.example.com
+    For support or feedback, please contact debanikdebnath21@gmail.com
     """)
 
 # --- Footer ---
